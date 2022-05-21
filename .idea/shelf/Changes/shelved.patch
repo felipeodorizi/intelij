@@ -1,0 +1,180 @@
+Index: src/main/resources/META-INF/persistence.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/META-INF/persistence.xml b/src/main/resources/META-INF/persistence.xml
+new file mode 100644
+--- /dev/null	(date 1652985019806)
++++ b/src/main/resources/META-INF/persistence.xml	(date 1652985019806)
+@@ -0,0 +1,16 @@
++<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
++<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
++             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd"
++             version="2.2">
++    <persistence-unit name="default">
++        <class>entity.Employee</class>
++        <properties>
++            <property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver"/>
++            <property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:file:target/myDB;shutdown=true"/>
++            <property name="javax.persistence.jdbc.user" value="user"/>
++            <property name="javax.persistence.jdbc.password" value="password"/>
++            <property name="hibernate.hbm2ddl.auto" value="update"/>
++        </properties>
++    </persistence-unit>
++</persistence>
+Index: src/main/webapp/index.jsp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/webapp/index.jsp b/src/main/webapp/index.jsp
+new file mode 100644
+--- /dev/null	(date 1652983402892)
++++ b/src/main/webapp/index.jsp	(date 1652983402892)
+@@ -0,0 +1,13 @@
++<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
++<!DOCTYPE html>
++<html>
++<head>
++    <title>JSP - Hello World</title>
++</head>
++<body>
++<h1><%= "Hello World!" %>
++</h1>
++<br/>
++<a href="hello-servlet">Hello Servlet</a>
++</body>
++</html>
+\ No newline at end of file
+Index: src/main/java/Main.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/Main.java b/src/main/java/Main.java
+new file mode 100644
+--- /dev/null	(date 1652984855721)
++++ b/src/main/java/Main.java	(date 1652984855721)
+@@ -0,0 +1,19 @@
++import entity.Employee;
++
++import javax.persistence.EntityManager;
++import javax.persistence.EntityManagerFactory;
++import javax.persistence.Persistence;
++public class Main {
++    public static void main(String[] args) {
++        Employee employee = new Employee();
++        employee.setfName("Dalia");
++        employee.setlName("Abo Sheasha");
++        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
++        EntityManager entityManager = entityManagerFactory.createEntityManager();
++        entityManager.getTransaction().begin();
++        entityManager.persist(employee);
++        entityManager.getTransaction().commit();
++        entityManager.close();
++        entityManagerFactory.close();
++    }
++}
+\ No newline at end of file
+Index: src/main/java/entity/Employee.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/entity/Employee.java b/src/main/java/entity/Employee.java
+new file mode 100644
+--- /dev/null	(date 1652984808730)
++++ b/src/main/java/entity/Employee.java	(date 1652984808730)
+@@ -0,0 +1,34 @@
++package entity;
++
++import javax.persistence.Entity;
++import javax.persistence.GeneratedValue;
++import javax.persistence.Id;
++
++@Entity
++public class Employee {
++    @Id
++    @GeneratedValue
++    private Long id;
++    private String fName;
++    private String lName;
++    public Employee() {
++    }
++    public void setId(Long id) {
++        this.id = id;
++    }
++    public Long getId() {
++        return id;
++    }
++    public String getfName() {
++        return fName;
++    }
++    public void setfName(String fName) {
++        this.fName = fName;
++    }
++    public String getlName() {
++        return lName;
++    }
++    public void setlName(String lName) {
++        this.lName = lName;
++    }
++}
+\ No newline at end of file
+Index: src/main/java/com/example/demo/HelloServlet.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/example/demo/HelloServlet.java b/src/main/java/com/example/demo/HelloServlet.java
+new file mode 100644
+--- /dev/null	(date 1652983367671)
++++ b/src/main/java/com/example/demo/HelloServlet.java	(date 1652983367671)
+@@ -0,0 +1,27 @@
++package com.example.demo;
++
++import java.io.*;
++import javax.servlet.http.*;
++import javax.servlet.annotation.*;
++
++@WebServlet(name = "helloServlet", value = "/hello-servlet")
++public class HelloServlet extends HttpServlet {
++    private String message;
++
++    public void init() {
++        message = "Hello World!";
++    }
++
++    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
++        response.setContentType("text/html");
++
++        // Hello
++        PrintWriter out = response.getWriter();
++        out.println("<html><body>");
++        out.println("<h1>" + message + "</h1>");
++        out.println("</body></html>");
++    }
++
++    public void destroy() {
++    }
++}
+\ No newline at end of file
+Index: src/main/webapp/WEB-INF/web.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/webapp/WEB-INF/web.xml b/src/main/webapp/WEB-INF/web.xml
+new file mode 100644
+--- /dev/null	(date 1652983367703)
++++ b/src/main/webapp/WEB-INF/web.xml	(date 1652983367703)
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
++         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
++         version="4.0">
++</web-app>
+\ No newline at end of file
